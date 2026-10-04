@@ -1,46 +1,60 @@
-import json
-import os
 from typing import Any
 
-from .config import DATA_DIR
+from pymongo import MongoClient
+from pymongo.errors import PyMongoError
 
-STORE_PATH = os.path.join(DATA_DIR, "documents.json")
-
-
-def _load() -> list[dict[str, Any]]:
-    if not os.path.exists(STORE_PATH):
-        return []
-    try:
-        with open(STORE_PATH, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except (json.JSONDecodeError, OSError):
-        return []
+from .config import MONGO_URI, MONGO_DB_NAME
 
 
-def _save(items: list[dict[str, Any]]) -> None:
-    with open(STORE_PATH, "w", encoding="utf-8") as f:
-        json.dump(items, f, ensure_ascii=False, indent=2)
+client = MongoClient(MONGO_URI)
+
+db = client[MONGO_DB_NAME]
+documents_collection = db["documents"]
 
 
 def list_documents() -> list[dict[str, Any]]:
-    return _load()
+    try:
+        documents = list(
+            documents_collection.find(
+                {},
+                {"_id": 0}
+            )
+        )
+
+        return documents
+
+    except PyMongoError as e:
+        raise RuntimeError(f"Failed to load documents: {e}")
 
 
 def add_document(item: dict[str, Any]) -> dict[str, Any]:
-    items = _load()
-    items.append(item)
-    _save(items)
-    return item
+    try:
+        documents_collection.insert_one(item)
+
+        return item
+
+    except PyMongoError as e:
+        raise RuntimeError(f"Failed to save document: {e}")
 
 
 def get_document(doc_id: str) -> dict[str, Any] | None:
-    return next((x for x in _load() if x["id"] == doc_id), None)
+    try:
+        return documents_collection.find_one(
+            {"id": doc_id},
+            {"_id": 0}
+        )
+
+    except PyMongoError as e:
+        raise RuntimeError(f"Failed to get document: {e}")
 
 
 def delete_document(doc_id: str) -> bool:
-    items = _load()
-    new_items = [x for x in items if x["id"] != doc_id]
-    if len(new_items) == len(items):
-        return False
-    _save(new_items)
-    return True
+    try:
+        result = documents_collection.delete_one(
+            {"id": doc_id}
+        )
+
+        return result.deleted_count > 0
+
+    except PyMongoError as e:
+        raise RuntimeError(f"Failed to delete document: {e}")
