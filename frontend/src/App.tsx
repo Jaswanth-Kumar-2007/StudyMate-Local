@@ -48,6 +48,7 @@ function App() {
   const [quizIndex, setQuizIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState(0);
+  const [uploading, setUploading] = useState(false);
 
   const loadDocuments = async () => {
     const res = await fetch(`${API}/documents`);
@@ -57,24 +58,6 @@ function App() {
   useEffect(() => {
     loadDocuments().catch(() => {});
   }, []);
-
-  const upload = async (file: File) => {
-    setError("");
-    const form = new FormData();
-    form.append("file", file);
-
-    const res = await fetch(`${API}/documents`, {
-      method: "POST",
-      body: form,
-    });
-
-    const data = await res.json();
-    if (!res.ok) {
-      setError(data.detail || "Upload failed.");
-      return;
-    }
-    await loadDocuments();
-  };
 
   const remove = async (id: string) => {
     try {
@@ -188,6 +171,39 @@ function App() {
 
   const hasFinished = quiz && quizIndex === quiz.questions.length - 1 && selected !== null;
 
+  
+
+  const upload = async (file: File) => {
+    setError("");
+    setUploading(true);
+
+    const form = new FormData();
+    form.append("file", file);
+
+    try {
+      const res = await fetch(`${API}/documents`, {
+        method: "POST",
+        body: form,
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.detail || "Upload failed.");
+      }
+
+      await loadDocuments();
+    } catch (e) {
+      setError(
+        e instanceof Error
+          ? e.message
+          : "Something went wrong while uploading."
+      );
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <div className="app">
       <header className="topbar">
@@ -211,6 +227,7 @@ function App() {
                 type="file"
                 accept=".pdf"
                 hidden
+                disabled={uploading}
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   if (file) upload(file);
@@ -220,17 +237,33 @@ function App() {
             </label>
           </div>
 
-          <label className="dropzone">
-            <Upload size={20} />
-            <b>Upload PDF notes</b>
-            <span>Your files stay on this machine.</span>
+          <label className={`dropzone ${uploading ? "uploading" : ""}`}>
+            {uploading ? (
+              <>
+                <div className="upload-spinner" />
+                <b>Processing your PDF...</b>
+                <span>Extracting notes and preparing them for StudyMate.</span>
+              </>
+            ) : (
+              <>
+                <Upload size={20} />
+                <b>Upload PDF notes</b>
+                <span>Select a PDF containing your study notes.</span>
+              </>
+            )}
+
             <input
               type="file"
               accept=".pdf"
               hidden
+              disabled={uploading}
               onChange={(e) => {
                 const file = e.target.files?.[0];
-                if (file) upload(file);
+
+                if (file) {
+                  upload(file);
+                }
+
                 e.currentTarget.value = "";
               }}
             />
