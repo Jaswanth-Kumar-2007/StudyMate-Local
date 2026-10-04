@@ -1,183 +1,185 @@
+Absolutely. Here is the **complete copy-paste README.md** for the final version of StudyMate.
+
+````markdown
 # StudyMate
 
-An AI-powered study assistant built for a real friend who wants help understanding class notes and practicing for exams.
+> An AI-powered study companion that helps students understand their own notes, ask questions, and practice for exams.
 
-StudyMate lets students upload their study material, ask questions, understand difficult topics, and generate practice quizzes based on their own notes.
+StudyMate was built for a real friend who wanted a simple way to understand class notes and prepare for exams.
 
-## Core Idea
+Instead of searching through long PDFs manually, students can upload their notes and use StudyMate to ask questions, learn difficult topics, and generate practice quizzes from the uploaded material.
 
-StudyMate combines document retrieval with an open-weight AI model.
+---
 
-The application first extracts and retrieves relevant sections from uploaded study material, then provides that context to the AI model to generate an answer.
+## ✨ Features
 
-### Current Online Setup
+- 📄 Upload PDF study notes
+- 🔎 Retrieve relevant sections from uploaded notes
+- 💬 Ask questions about your notes
+- 🧠 Get simple explanations of difficult topics
+- 📝 Generate multiple-choice practice quizzes
+- 🗑️ Manage and delete uploaded documents
+- 📚 View document pages and extracted sections
+- 🤖 Open-weight AI at the core
+- 🖥️ Local AI option using Ollama
+- ☁️ Online AI inference using Hugging Face
+- 🗄️ MongoDB persistence for uploaded document data
+- ⚡ Upload processing feedback so users know when their PDF is being processed
 
-The current online version uses **Hugging Face Inference Providers** with the open-weight:
+---
 
-`Qwen/Qwen3-4B-Instruct-2507`
+## 🏗️ How It Works
+
+### Online Version
+
+The currently deployed version uses Hugging Face for AI inference.
 
 ```text
-React + TypeScript
-        ↓
-FastAPI
-        ↓
-PDF extraction
-        ↓
-TF-IDF retrieval
-        ↓
-Hugging Face Inference
-        ↓
-Qwen3-4B-Instruct-2507
-        ↓
-Answer / Explanation / Quiz
-```
+React + TypeScript + Vite
+            ↓
+        FastAPI
+            ↓
+     PDF text extraction
+            ↓
+     TF-IDF retrieval
+            ↓
+   Relevant study sections
+            ↓
+ Hugging Face Inference
+            ↓
+Qwen/Qwen3-4B-Instruct-2507
+````
 
-### Local Alternative
+MongoDB Atlas stores the extracted document data and chunks.
 
-StudyMate was initially designed around local AI inference using Ollama.
+### Local AI Version
 
-If you want to run the AI locally instead of using the online Hugging Face inference setup, Ollama can be used with an open-weight model such as `qwen2.5:3b`.
+StudyMate can also be run with a local AI model using Ollama:
 
 ```text
 React
   ↓
 FastAPI
   ↓
-Local retrieval
+PDF extraction
+  ↓
+TF-IDF retrieval
   ↓
 Ollama
   ↓
-Qwen
+Qwen 2.5 3B
 ```
 
-This makes the project flexible between cloud-based and local inference.
+This provides an alternative where AI inference can happen on the user's own machine.
 
 ---
 
-## Features
-
-* 📄 Upload study PDFs
-* 🔎 Retrieve relevant sections from uploaded material
-* 💬 Ask questions about your notes
-* 📚 Explain difficult topics in simpler language
-* 📝 Generate practice questions
-* 🧠 Generate short quizzes
-* 🤖 Use an open-weight AI model
-* 🌐 Run online through Hugging Face
-* 💻 Option to use local inference through Ollama
-
----
-
-## Tech Stack
+## 🧰 Tech Stack
 
 ### Frontend
 
 * React
 * TypeScript
 * Vite
+* Lucide React
+* CSS
 
 ### Backend
 
 * Python
 * FastAPI
 * Uvicorn
+* pypdf
+* scikit-learn
 
 ### AI
 
 **Online:**
 
 * Hugging Face Inference Providers
-* Qwen/Qwen3-4B-Instruct-2507
+* `Qwen/Qwen3-4B-Instruct-2507`
 
-**Local alternative:**
+**Local:**
 
 * Ollama
-* Qwen or another compatible open-weight model
+* `qwen2.5:3b`
 
-### Document Processing
+### Database
 
-* pypdf
+* MongoDB Atlas
+* PyMongo
 
-### Retrieval
+### Deployment
 
-* scikit-learn
-* TF-IDF retrieval
+* Render
 
 ---
 
-## Project Structure
+## 📂 Project Structure
 
 ```text
 StudyMate/
+│
 ├── backend/
 │   ├── app/
-│   │   ├── __init__.py
-│   │   ├── main.py
 │   │   ├── config.py
 │   │   ├── huggingface.py
+│   │   ├── main.py
 │   │   ├── retrieval.py
 │   │   └── store.py
-│   ├── data/
+│   │
 │   ├── requirements.txt
-│   └── .env.example
+│   └── .env
 │
 ├── frontend/
 │   ├── src/
 │   │   ├── App.tsx
 │   │   ├── main.tsx
-│   │   └── styles.css
+│   │   ├── App.css
+│   │   └── vite-env.d.ts
+│   │
 │   ├── package.json
 │   └── vite.config.ts
 │
-├── README.md
-├── LICENSE
-└── .gitignore
+└── README.md
 ```
 
 ---
 
-# Running StudyMate Locally
-
-You can run the frontend and backend locally while still using Hugging Face for AI inference.
-
-## Requirements
-
-* Python 3.11+
-* Node.js 20+
-* A Hugging Face account and API token
-
----
+# 🚀 Running Locally
 
 ## 1. Clone the repository
 
 ```bash
-git clone <YOUR_GITHUB_REPOSITORY_URL>
+git clone YOUR_GITHUB_REPOSITORY_URL
 cd StudyMate
 ```
 
 ---
 
-## 2. Set up the backend
+## 2. Backend Setup
 
 ```bash
 cd backend
-
-python -m venv .venv
 ```
+
+Create a virtual environment:
 
 ### Linux/macOS
 
 ```bash
+python -m venv .venv
 source .venv/bin/activate
 ```
 
 ### Windows
 
 ```bash
+python -m venv .venv
 .venv\Scripts\activate
 ```
 
-Install dependencies:
+Install the dependencies:
 
 ```bash
 pip install -r requirements.txt
@@ -185,38 +187,53 @@ pip install -r requirements.txt
 
 ---
 
-## 3. Configure Hugging Face
+## 3. Configure Environment Variables
 
-Create:
+Create a file:
 
 ```text
 backend/.env
 ```
 
-Add:
+For the Hugging Face setup:
 
 ```env
 HF_TOKEN=your_huggingface_token
 HF_MODEL=Qwen/Qwen3-4B-Instruct-2507
 
+MONGO_URI=your_mongodb_connection_string
+MONGO_DB_NAME=studymate
+
 CORS_ORIGINS=http://localhost:5173
 ```
 
-**Never commit your real `HF_TOKEN` to GitHub.**
-
-The repository contains `.env.example` as a template.
+Never commit your `.env` file or API tokens to GitHub.
 
 ---
 
-## 4. Start the backend
+# 🖥️ Local Ollama Setup
+
+If you want to run AI inference locally instead of using Hugging Face, install Ollama and download an open-weight model such as:
+
+```text
+qwen2.5:3b
+```
+
+The local Ollama configuration can then be used for local inference.
+
+This provides an alternative for users who want the AI inference component to run on their own machine.
+
+---
+
+# ▶️ Start the Backend
 
 From the `backend` directory:
 
 ```bash
-uvicorn app.main:app --reload --port 8000
+uvicorn app.main:app --reload
 ```
 
-The API will be available at:
+The backend will be available at:
 
 ```text
 http://localhost:8000
@@ -230,7 +247,7 @@ http://localhost:8000/docs
 
 ---
 
-## 5. Start the frontend
+# ▶️ Start the Frontend
 
 Open another terminal:
 
@@ -240,205 +257,176 @@ npm install
 npm run dev
 ```
 
-Open the URL shown by Vite, normally:
+The frontend will normally be available at:
 
 ```text
 http://localhost:5173
 ```
 
----
+If you want the frontend to use the deployed backend, configure:
 
-# Running with Ollama Instead
-
-StudyMate can also be adapted to use local Ollama inference.
-
-Install Ollama from:
-
-https://ollama.com/
-
-Then pull an open-weight model:
-
-```bash
-ollama pull qwen2.5:3b
+```env
+VITE_API_URL=https://studymate-local.onrender.com/api
 ```
 
-The original local architecture is:
+---
+
+# 🔌 API Endpoints
+
+| Method | Endpoint              | Purpose                 |
+| ------ | --------------------- | ----------------------- |
+| GET    | `/api/health`         | Check backend health    |
+| GET    | `/api/documents`      | List uploaded documents |
+| POST   | `/api/documents`      | Upload a PDF            |
+| DELETE | `/api/documents/{id}` | Delete a document       |
+| POST   | `/api/ask`            | Ask a question          |
+| POST   | `/api/explain`        | Explain a topic         |
+| POST   | `/api/quiz`           | Generate a quiz         |
+
+---
+
+# 🔎 Retrieval Pipeline
+
+StudyMate does not simply send the entire document to the AI model.
+
+The application first:
+
+1. Extracts text from the uploaded PDF.
+2. Splits the text into smaller chunks.
+3. Uses TF-IDF to identify relevant chunks.
+4. Selects the most relevant study sections.
+5. Sends those sections as context to the AI model.
+6. Generates an answer based on the retrieved notes.
+
+This keeps the AI focused on the student's own study material.
+
+---
+
+# 🤖 Why Open-Weight AI?
+
+Open innovation gives developers the ability to experiment, build, and modify applications using openly available technologies rather than depending entirely on closed systems.
+
+StudyMate uses the open-weight Qwen model as its AI foundation.
+
+The deployed version uses Hugging Face for inference, while the project also supports Ollama for local model execution.
+
+This flexibility allows developers to:
+
+* Experiment with different models
+* Run models locally
+* Learn how AI systems work
+* Build applications without being locked into a single AI provider
+* Combine open-source software with open-weight AI
+
+---
+
+# ❤️ Built for a Friend
+
+StudyMate was created for a real friend who needed help understanding class notes and preparing for exams.
+
+The goal was not to build another general-purpose chatbot.
+
+The goal was to solve a specific problem:
+
+> "I have my notes, but I don't want to spend hours searching through them to understand what I need for my exam."
+
+That led to the core workflow:
 
 ```text
-PDF
- ↓
-Text extraction
- ↓
-TF-IDF retrieval
- ↓
-Relevant context
- ↓
-Ollama
- ↓
-Qwen
- ↓
-Study response
+Upload notes
+     ↓
+Ask about the notes
+     ↓
+Understand difficult topics
+     ↓
+Practice with quizzes
 ```
 
-This option is useful when you want inference to happen on your own computer rather than through an online inference provider.
+The application was designed around that actual use case rather than simply adding AI features for the sake of using AI.
 
 ---
 
-# API
+# 🔐 Security & Privacy
 
-| Method | Endpoint              | Purpose                             |
-| ------ | --------------------- | ----------------------------------- |
-| GET    | `/api/health`         | Check backend and AI configuration  |
-| POST   | `/api/documents`      | Upload a study PDF                  |
-| GET    | `/api/documents`      | List uploaded documents             |
-| DELETE | `/api/documents/{id}` | Delete a document                   |
-| POST   | `/api/ask`            | Ask a question about study material |
-| POST   | `/api/explain`        | Explain a topic                     |
-| POST   | `/api/quiz`           | Generate a quiz                     |
+* API tokens are stored in environment variables.
+* Secrets should never be committed to GitHub.
+* The Hugging Face token is kept on the backend and is not exposed to the frontend.
+* MongoDB credentials are stored in environment variables.
 
----
+### Important Privacy Note
 
-# How Retrieval Works
+The deployed version uses Hugging Face for AI inference. Therefore, relevant retrieved study-note context is sent to the configured Hugging Face inference service.
 
-StudyMate does not simply send every uploaded document directly to the AI model.
-
-The process is:
-
-```text
-PDF
- ↓
-Extract text with pypdf
- ↓
-Split text into chunks
- ↓
-Create TF-IDF representation
- ↓
-Find relevant chunks
- ↓
-Build a context-aware prompt
- ↓
-Send relevant context to Qwen
- ↓
-Generate response
-```
-
-This keeps the AI focused on the student's uploaded material.
+The local Ollama setup provides an alternative for users who want AI inference to happen on their own machine.
 
 ---
 
-# Cloud Deployment
+# ⚠️ Current Limitations
 
-The project is designed to be deployed using:
+StudyMate is a hackathon project and intentionally uses a lightweight retrieval system.
 
-```text
-                    ┌──────────────────┐
-                    │  React Frontend  │
-                    │     Vercel       │
-                    └────────┬─────────┘
-                             │
-                             ↓
-                    ┌──────────────────┐
-                    │ FastAPI Backend  │
-                    │     Render       │
-                    └────────┬─────────┘
-                             │
-                    PDF + Retrieval
-                             │
-                             ↓
-                    ┌──────────────────┐
-                    │    Hugging Face  │
-                    │    Inference     │
-                    └────────┬─────────┘
-                             │
-                             ↓
-                    Qwen3-4B-Instruct
-```
+Current limitations include:
 
-The Hugging Face API token is stored as a backend environment variable and is **never exposed to the React frontend**.
+* TF-IDF retrieval is simpler than modern embedding-based retrieval.
+* PDF extraction depends on selectable text.
+* Scanned/image-only PDFs are not currently supported.
+* The application does not yet provide user accounts.
+* Conversation history is not persistent.
+* Quiz quality depends on the quality of the retrieved notes.
+* The deployed AI inference depends on the availability of the inference provider.
 
 ---
 
-# Open-Source AI
-
-StudyMate is built around an open-weight AI model rather than being tied exclusively to a proprietary closed model.
-
-The current online AI model is:
-
-**Qwen/Qwen3-4B-Instruct-2507**
-
-The inference layer is provided through Hugging Face Inference Providers.
-
-The project can also be adapted for local inference through Ollama.
-
-This makes it possible to experiment with different models and deployment approaches without redesigning the entire application.
-
----
-
-# Why I Built It
-
-I built StudyMate for a real friend who wanted a simpler way to study from class notes.
-
-Instead of creating another general-purpose chatbot, I wanted to make something focused on a student's actual study material.
-
-The goal is simple:
-
-> Upload your notes, ask questions, understand difficult topics, and test yourself.
-
----
-
-# Hacktoberfest Weekend Challenge
-
-This project was built for the **Hacktoberfest Weekend Challenge: Build for a Friend**.
-
-The challenge encouraged participants to build something useful for a real friend or loved one while putting open-source AI at the core.
-
-StudyMate combines:
-
-* Open-weight AI
-* Open-source software
-* Document retrieval
-* A real student-focused problem
-* A practical AI application
-
----
-
-# Security Notes
-
-* Do not commit `.env`.
-* Do not expose `HF_TOKEN` in the frontend.
-* Keep API credentials in backend environment variables.
-* Uploaded study material should be treated as user-provided data.
-* The cloud version sends retrieved study context to the configured inference provider.
-
----
-
-# Limitations
-
-StudyMate is a hackathon/weekend project and is intentionally lightweight.
-
-It is designed to demonstrate an AI study workflow rather than replace teachers, tutors, or professional educational services.
-
-The retrieval system currently uses lightweight TF-IDF rather than a vector database or embedding-based retrieval system.
-
----
-
-# Future Improvements
+# 🔮 Future Improvements
 
 Possible future improvements include:
 
-* Semantic embeddings for better retrieval
-* Vector database integration
+* Semantic embeddings
+* Vector database retrieval
 * Better document chunking
+* OCR for scanned PDFs
 * Support for more document formats
-* Conversation history
-* User accounts
-* More advanced quiz generation
+* Persistent conversation history
+* User authentication
 * Streaming AI responses
-* Additional open-weight models
-* Fully local deployment with Ollama
+* More local model options
+* Better quiz evaluation
+* Personalized study plans
 
 ---
 
-## License
+# 🏆 Hacktoberfest Weekend Challenge
 
-This project is open source. See the `LICENSE` file for details.
+StudyMate was built for the **Build for a Friend** challenge.
+
+The project focuses on a real student problem while keeping open-source software and open-weight AI at the core.
+
+The goal was to combine open technologies with a practical application that could actually help someone in their everyday studies.
+
+---
+
+# 📜 License
+
+Add your chosen open-source license here.
+
+---
+
+# 👨‍💻 Author
+
+**Jaswanth Kumar**
+
+Built with React, FastAPI, MongoDB, Hugging Face, Qwen, and open-source technologies.
+
+````
+
+### Before you paste it
+
+Only replace:
+
+```text
+YOUR_GITHUB_REPOSITORY_URL
+````
+
+with your actual GitHub repository URL.
+
+I intentionally left out the live demo URL for now so you can add your final Render URL yourself.
