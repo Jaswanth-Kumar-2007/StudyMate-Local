@@ -77,8 +77,27 @@ function App() {
   };
 
   const remove = async (id: string) => {
-    await fetch(`${API}/documents/${id}`, { method: "DELETE" });
-    await loadDocuments();
+    try {
+      setError("");
+
+      const res = await fetch(`${API}/documents/${id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.detail || "Failed to delete document.");
+      }
+
+      await loadDocuments();
+    } catch (e) {
+      setError(
+        e instanceof Error
+          ? e.message
+          : "Failed to delete document."
+      );
+    }
   };
 
   const runAsk = async () => {
