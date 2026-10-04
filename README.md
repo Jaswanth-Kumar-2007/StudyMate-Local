@@ -1,6 +1,3 @@
-Absolutely. Here is the **complete copy-paste README.md** for the final version of StudyMate.
-
-````markdown
 # StudyMate
 
 > An AI-powered study companion that helps students understand their own notes, ask questions, and practice for exams.
@@ -415,18 +412,6 @@ Add your chosen open-source license here.
 
 **Jaswanth Kumar**
 
-Built with React, FastAPI, MongoDB, Hugging Face, Qwen, and open-source technologies.
-
 ````
 
-### Before you paste it
 
-Only replace:
-
-```text
-YOUR_GITHUB_REPOSITORY_URL
-````
-
-with your actual GitHub repository URL.
-
-I intentionally left out the live demo URL for now so you can add your final Render URL yourself.
