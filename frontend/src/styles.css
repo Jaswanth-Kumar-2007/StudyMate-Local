@@ -26,9 +26,27 @@ button { cursor: pointer; }
 .privacy-pill { font-size: 12px; color: #d7e0ea; border: 1px solid #344054; border-radius: 99px; padding: 8px 12px; }
 .privacy-pill span { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #53d769; margin-right: 7px; }
 
-.layout { flex: 1; display: grid; grid-template-columns: 310px minmax(0, 1fr); max-width: 1400px; width: 100%; margin: 0 auto; }
+.layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 310px minmax(0, 1fr);
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}
 
-.sidebar { padding: 28px 22px; border-right: 1px solid #e3e6ea; background: #fff; }
+.sidebar {
+  width: 310px;
+  min-width: 310px;
+  max-width: 310px;
+  padding: 28px 22px;
+  border-right: 1px solid #e3e6ea;
+  background: #fff;
+  overflow: hidden;
+}
+
+
 .sidebar-title { display: flex; justify-content: space-between; align-items: center; font-weight: 700; margin-bottom: 15px; }
 .upload-btn { width: 31px; height: 31px; border: 1px solid #d6dae0; border-radius: 9px; display: grid; place-items: center; cursor: pointer; }
 .dropzone { border: 1.5px dashed #c9ced6; border-radius: 14px; min-height: 125px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 6px; color: #677285; cursor: pointer; }
@@ -101,19 +119,12 @@ textarea { resize: vertical; line-height: 1.5; }
 footer { border-top: 1px solid #e4e7eb; padding: 15px 5%; display: flex; justify-content: space-between; color: #98a2b3; font-size: 10px; }
 
 
-.doc-list {
-  margin-top: 20px;
-  display: grid;
-  gap: 8px;
-  width: 100%;
-  min-width: 0;
-}
-
 .doc {
   width: 100%;
-  min-width: 0;
   max-width: 100%;
-  display: flex;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) 24px;
   align-items: center;
   gap: 9px;
   padding: 10px;
@@ -123,14 +134,14 @@ footer { border-top: 1px solid #e4e7eb; padding: 15px 5%; display: flex; justify
 }
 
 .doc > svg {
-  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
   color: #667085;
 }
 
 .doc-info {
-  flex: 1 1 0;
-  width: 0;
   min-width: 0;
+  width: 100%;
   overflow: hidden;
 }
 
@@ -146,12 +157,29 @@ footer { border-top: 1px solid #e4e7eb; padding: 15px 5%; display: flex; justify
 
 .doc-info span {
   display: block;
+  width: 100%;
+  min-width: 0;
   color: #8a93a1;
   font-size: 10px;
   margin-top: 3px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.doc button {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  padding: 3px;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: #98a2b3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .doc button {
@@ -166,19 +194,32 @@ footer { border-top: 1px solid #e4e7eb; padding: 15px 5%; display: flex; justify
   place-items: center;
 }
 
+.doc-list {
+  margin-top: 20px;
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.upload-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
 
-.sidebar {
-  padding: 28px 22px;
-  border-right: 1px solid #e3e6ea;
-  background: #fff;
-  min-width: 0;
-  overflow: hidden;
-}
+
 
 @media (max-width: 800px) {
   .layout { display: block; }
